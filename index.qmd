@@ -1,0 +1,36 @@
+---
+title: "STAA 566 - Dynamic Graphs"
+author: "Bogarth Hernandez"
+format: html
+editor: visual
+---
+
+## Data Source
+
+Hannah Ritchie, Max Roser and Pablo Rosado (2020) - "Energy".
+
+Published online at OurWorldInData.org. Retrieved from: '<https://ourworldindata.org/energy>'
+
+## R Code
+
+```{r}
+
+library(tidyverse)
+library(plotly)
+
+
+solar <- read_csv('share-electricity-solar.csv', show_col_types = FALSE)
+
+#Five Bigest economies countries and world
+solar_sel <-  filter(solar, Entity %in% c("World", "China", "United States", "Japan", "Germany", "United Kingdom") & Year >= 2000)
+
+
+#view(solar)
+
+plot_ly(solar_sel , x= ~Year, y= ~Solar, name = ~Entity ,type = 'scatter', mode = 'lines')
+
+
+
+
+
+```
