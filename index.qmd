@@ -5,11 +5,25 @@ format: html
 editor: visual
 ---
 
-## Data Source
+## Summary
+
+The last decades the electricity production has been changing in favor of the environment due to the commitment of goverments and society to have a more sustainable energy generation. An important alternative to achieve the decarbonization of the generation of electricity is the use solar energy to generate electricity.
+
+This graph shows how the 5 biggest economies countries are changing their electricity production in favor of solar energy.
+
+**Data Source :**
 
 Hannah Ritchie, Max Roser and Pablo Rosado (2020) - "Energy".
 
 Published online at OurWorldInData.org. Retrieved from: '<https://ourworldindata.org/energy>'
+
+**Functionalities & Formating:**
+
+-   Range slider to be able analyze specific ranges of year and see detailed information.
+
+-   hovermode option to make easy comparitions
+
+-   positioning the legend to save space
 
 ## R Code
 
@@ -21,16 +35,22 @@ library(plotly)
 
 solar <- read_csv('share-electricity-solar.csv', show_col_types = FALSE)
 
-#Five Bigest economies countries and world
-solar_sel <-  filter(solar, Entity %in% c("World", "China", "United States", "Japan", "Germany", "United Kingdom") & Year >= 2000)
+solar$Solar <- round(solar$Solar,2)
 
+#Five Biggest economies countries
+solar_c <-  filter(solar, Entity %in% c("China", "United States", "Japan", "Germany", "United Kingdom") & Year >= 1990)
 
-#view(solar)
+solar_g <- plot_ly(solar_c , x= ~Year, y= ~Solar, name = ~Entity ,type = 'scatter', mode = 'lines')
 
-plot_ly(solar_sel , x= ~Year, y= ~Solar, name = ~Entity ,type = 'scatter', mode = 'lines')
+#adding range slider and hovermode option
 
+solar_g <- solar_g %>% rangeslider() %>% layout(hovermode = "x")
 
+#seting layout
 
+solar_g <- solar_g %>%  layout( title = "Share of Electricity Production From Solar 1990-2021 \n Five Biggest Economies", xaxis = list(title="Year"), yaxis = list(title = "Solar Share", ticksuffix = "%"), legend = list(x = 0.05, y = 0.8))
+
+solar_g
 
 
 ```
